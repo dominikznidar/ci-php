@@ -2,20 +2,22 @@ FROM trifs/ci-php-base:5.6
 MAINTAINER Igor Ajdisek <igor@3fs.si>
 
 # Install Cassandra PHP driver 
-RUN git clone https://github.com/datastax/php-driver.git && 
+RUN sudo apt-get install -y cmake
+RUN git clone https://github.com/datastax/php-driver.git && \
     cd php-driver && \
-    git reset --hard 1.0.1 && \
+    git reset --hard v1.0.1 && \
     git submodule update --init && \
     cd ext && \
     sudo ./install.sh
 RUN echo extension=cassandra.so | sudo tee /etc/php5/cli/conf.d/cassandra.ini
 
 # Ensure cqlsh is available 
-RUN wget http://archive.apache.org/dist/cassandra/2.0.16/apache-cassandra-2.0.16-bin.tar.gz && \
+RUN curl -O http://archive.apache.org/dist/cassandra/2.0.16/apache-cassandra-2.0.16-bin.tar.gz && \
     tar xf apache-cassandra-2.0.16-bin.tar.gz && \
     sudo mv apache-cassandra-2.0.16/bin/cqlsh /usr/local/bin/ && \
     sudo mv apache-cassandra-2.0.16/pylib /usr/local/ && \
     rm -rf apache-cassandra-2.0.16* && \
+    sudo apt-get install -y python-dev python-pip && \
     sudo pip install cql
 
 # Legacy: compile phlacon support for PHP 

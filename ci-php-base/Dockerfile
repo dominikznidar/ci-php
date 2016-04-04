@@ -1,7 +1,7 @@
 FROM trifs/ci-puppet
 MAINTAINER Igor Ajdisek <igor@3fs.si>
 
-RUN sudo add-apt-repository -y ppa:ondrej/php5-5.6 && \
+RUN export LANG=C.UTF-8 && sudo apt-add-repository -y ppa:ondrej/php5-5.6 && \
     sudo apt-add-repository -y ppa:linuxjedi/ppa   && \
     sudo apt-get update -qq                        && \
     sudo apt-get install -y libuv-dev libgmp-dev   && \
